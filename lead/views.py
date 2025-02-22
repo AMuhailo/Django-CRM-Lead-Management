@@ -1,8 +1,9 @@
 from urllib import request
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
+
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView
-from lead.forms import LeadForm
+from lead.forms import LeadForm, CustomSinginForm
 from lead.models import Lead, Agent
 # Create your views here.
 
@@ -17,8 +18,14 @@ class SelectedMixin:
         context = super().get_context_data(**kwargs)
         context["select"] = 'lead'
         return context
-    
 
+
+class SinginView(CreateView):
+    template_name = 'registration/singin.html'
+    form_class = CustomSinginForm
+    success_url = reverse_lazy("login")
+    
+    
 class HomeTemplateView(TemplateView):
     template_name = 'home.html'
     

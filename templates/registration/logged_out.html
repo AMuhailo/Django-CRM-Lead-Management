@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %} Update lead{% endblock title %}
+
+{% block content %}
+<div class="content-detail container" style="width:60%">
+    <div class="align-items-center p-3">
+        <div class="my-3">
+            <h5 class="text-uppercase">You logout from account.</h5>
+            <form action="{% url 'login' %}" method="post" class="mt-1 mx-3">
+                {% csrf_token %}
+                <button class="rounded px-4 py-1 btn-login">
+                    Login
+                </button>
+            </form>
+            
+        </div>
+    </div>
+</div>
+{% endblock content %}

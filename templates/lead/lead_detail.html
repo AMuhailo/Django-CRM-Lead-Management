@@ -14,7 +14,24 @@
         </div>
         <div class="my-3">
             <h5 class="text-uppercase">Detail</h5>
-            
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-start">
+                    <span>Full name</span>
+                    <span class='ms-auto'><strong>{{ lead }}</span></strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-start">
+                    <span>Email</span>
+                    <span class='ms-auto'><strong>{{ lead.email }}</span></strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-start">
+                    <span>Age</span>
+                    <span class='ms-auto'><strong>{{ lead.age }}</span></strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-start">
+                    <span>Phone</span>
+                    <span class='ms-auto'><strong>{{ lead.phone }}</span></strong>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
