@@ -1,0 +1,33 @@
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.urls import reverse
+# Create your models here.
+
+class User(AbstractUser):
+    pass
+
+#Present client
+class Lead(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField(blank = True, null = True)
+    phone = models.CharField(max_length=20)
+    age = models.IntegerField(default=0)
+    agent = models.ForeignKey("Agent", on_delete=models.CASCADE, related_name = 'lead_agent')
+    
+    class Meta:
+        ordering = ['-id','age']
+    
+    def get_absolute_url(self):
+        return reverse("lead:lead_detail_url", args=[self.pk])
+    
+    
+    def __str__(self):
+        return f"{self.last_name} {self.first_name}"
+    
+# Agent who work with Lead
+class Agent(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.user.username

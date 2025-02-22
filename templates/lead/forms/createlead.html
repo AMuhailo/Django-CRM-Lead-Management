@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %} 
+    {% if lead.pk %}
+        Update Lead 
+    {% else %}
+        Create Lead 
+    {% endif %}
+{% endblock title %}
+
+{% block content %}
+    <form method='POST'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class='btn btn-sm btn-primary'>Create</button>
+    </form>
+{% endblock content %}
