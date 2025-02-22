@@ -13,9 +13,11 @@
             <tr>
                 <th scope="col" class="table-light">First Name</th>
                 <th scope="col" class="table-light">Last Name</th>
+                <th scope="col" class="table-light">Age</th>
                 <th scope="col" class="table-light">Phone Number</th>
                 <th scope="col" class="table-light">Email</th>
                 <th scope="col" class="table-light">Category</th>
+                <th scope="col" class="table-light">Agent</th>
                 <th scope="col" class="table-light"></th>
             </tr>
         </thead>
@@ -23,9 +25,11 @@
             <tr>
                 <td><strong>{{ lead.first_name }}</strong></td>
                 <td><strong>{{ lead.last_name }}</strong></td>
-                <td>{{ lead.email }}</td>
+                <td>{{ lead.age }}</td>
                 <td>{{ lead.phone }}</td>
+                <td>{{ lead.email }}</td>
                 <td>------------</td>
+                <td>{{ lead.agent.user.get_full_name}}</td>
                 <td>
                     <a href="{% url 'lead:lead_update_url' lead.pk%}" class='text-decoration-none edit-link'>Edit</a>
                 </td>

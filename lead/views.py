@@ -1,7 +1,7 @@
 from urllib import request
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView
 from lead.forms import LeadForm, CustomSinginForm
 from lead.models import Lead, Agent
@@ -30,20 +30,20 @@ class HomeTemplateView(TemplateView):
     template_name = 'home.html'
     
     
-class LeadListView(SelectedMixin ,ListView):
+class LeadListView(LoginRequiredMixin,SelectedMixin, ListView):
     model = Lead
     context_object_name = 'leads'
-    queryset = Lead.objects.all()
+    queryset = Lead.objects.all().select_related('agent','agent__user')
     template_name = 'lead/lead_list.html'
 
-class LeadDetailView(SelectedMixin, DetailView):
+class LeadDetailView(LoginRequiredMixin, SelectedMixin, DetailView):
     model = Lead
     template_name = 'lead/lead_detail.html'
     context_object_name = 'lead'
     def get_object(self, queryset = ...):
         return get_object_or_404(Lead, pk=self.kwargs.get('lead_pk'))
 
-class LeadCreateView(SelectedMixin, EditFormMixin, CreateView):
+class LeadCreateView(LoginRequiredMixin, SelectedMixin, EditFormMixin, CreateView):
     template_name = 'lead/forms/createlead.html'
     def form_valid(self, form):
         lead = form.save(commit=False)
@@ -52,7 +52,7 @@ class LeadCreateView(SelectedMixin, EditFormMixin, CreateView):
         return super().form_valid(form)
     
 
-class LeadUpdateView(SelectedMixin, EditFormMixin, UpdateView):
+class LeadUpdateView(LoginRequiredMixin, SelectedMixin, EditFormMixin, UpdateView):
     pk_url_kwarg = 'lead_pk'
     template_name = 'lead/forms/updatelead.html'
     def form_valid(self, form):

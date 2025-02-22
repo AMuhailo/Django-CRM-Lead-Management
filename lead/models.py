@@ -3,9 +3,18 @@ from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 # Create your models here.
 
+#Custom user
 class User(AbstractUser):
     pass
 
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
+    
+    
 #Present client
 class Lead(models.Model):
     first_name = models.CharField(max_length=50)
@@ -13,8 +22,8 @@ class Lead(models.Model):
     email = models.EmailField(blank = True, null = True)
     phone = models.CharField(max_length=20)
     age = models.IntegerField(default=0)
-    agent = models.ForeignKey("Agent", on_delete=models.CASCADE, related_name = 'lead_agent')
-    
+    agent = models.ForeignKey("Agent", on_delete=models.CASCADE, related_name = 'leads')
+
     class Meta:
         ordering = ['-id','age']
     
@@ -28,6 +37,11 @@ class Lead(models.Model):
 # Agent who work with Lead
 class Agent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    organisation = models.ForeignKey(Profile, on_delete= models.CASCADE)
     
     def __str__(self):
         return self.user.username
+    
+    def get_absolute_url(self):
+        return reverse("agent:agent_detail_url", args=[self.pk])
+    

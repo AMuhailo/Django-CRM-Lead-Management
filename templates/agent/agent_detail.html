@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %} Detail agent{% endblock title %}
+
+{% block content %}
+<div class="content-detail container" style="width:60%">
+    <div class="align-items-center p-3">
+        <h3 class="fw-ligth text-uppercase lead-tt-detail ">Agent</h3>
+        <h4 class="fw-bold text-capitalize">{{ agent.user.username }}</h4>
+        <div class="d-flex justify-content-start option-detail">
+            <a class="text-decoration-none link-option-detail active">Overview</a>
+            <a href="{% url 'agent:agent_update_url' agent.pk%}"class="text-decoration-none link-option-detail ">Update Agent</a>
+        </div>
+        <div class="my-3">
+            <h5 class="text-uppercase">Detail</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-start">
+                    <span>Full name</span>
+                    <span class='ms-auto'><strong>{{ agent.user.get_full_name }}</span></strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-start">
+                    <span>Email</span>
+                    <span class='ms-auto'><strong>{{ agent.email }}</span></strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-start">
+                    <span>Lead</span>
+                    <span class='ms-auto'><strong>{{ agent.leads.count }}</span></strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock content %}

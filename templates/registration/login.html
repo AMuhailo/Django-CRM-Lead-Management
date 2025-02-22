@@ -10,7 +10,7 @@
             <form class="border-bottom border-2 pb-4" method='POST'>
                 {% csrf_token %}
                 {{ form.as_p}}
-                <input type='hidden' name='next' value='{{ next}}'>
+                <input type="hidden" name="next" value="{{ next|default:'/' }}">
                 <button class="rounded px-3 py-1 btn-login text-white">
                     Login
                 </button>

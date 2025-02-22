@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %} Update Agent{% endblock title %}
+
+{% block content %}
+<div class="content-detail container" style="width:60%">
+    <div class="align-items-center p-3">
+        <h3 class="fw-ligth text-uppercase lead-tt-detail ">Agent</h3>
+        <h4 class="fw-bold text-capitalize">{{ agent.user.username }}</h4>
+        <div class="d-flex justify-content-start option-detail">
+            <a href="{{ agent.get_absolute_url }}" class="text-decoration-none link-option-detail ">Overview</a>
+            <a class="text-decoration-none link-option-detail active">Update Agent</a>
+        </div>
+        <div class="my-3">
+            <h5 class="text-uppercase">Update Agent</h5>
+            <form class="border-bottom border-2 pb-4" method='POST'>
+                {% csrf_token %}
+                {{ form.as_p}}
+                <button type="submit" class="btn btn-primary btn-sm">Update Agent</button>
+            </form>
+            <form class="mt-3">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+            
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lead.apps.LeadConfig',
+    'agent.apps.AgentConfig',
     "debug_toolbar",
 ]
 
@@ -137,5 +138,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 AUTH_USER_MODEL  = 'lead.User'
 
 LOGIN_REDIRECT_URL = 'lead:lead_list_url'
+LOGIN_URL = 'login'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

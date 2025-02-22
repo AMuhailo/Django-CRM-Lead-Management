@@ -1,3 +1,4 @@
-/ll_env/
+ll_env/
 *__pycache__/
-mycrm/.env
+crmsystem/.env/
+*.sqlite3

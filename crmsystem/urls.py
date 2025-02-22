@@ -26,5 +26,6 @@ urlpatterns = [
     path('',HomeTemplateView.as_view(), name = 'home_template_url'),
     path('admin/', admin.site.urls),
     path('lead/',include('lead.urls', namespace='lead')),
+    path('agent/',include('agent.urls')),
     path('__debug__/',include('debug_toolbar.urls'))
 ]
