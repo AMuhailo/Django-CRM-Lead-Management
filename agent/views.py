@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.contrib.auth.mixins import LoginRequiredMixin
+from agent.mixins import LoginMixinOrganisation
 from django.urls import reverse_lazy
 from agent.forms import AgentForm
+from random import randint
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from lead.models import Agent
 
@@ -16,27 +17,31 @@ class FilterAgentMixin:
         organisation = self.request.user.profile
         return Agent.objects.filter(organisation=organisation)    
 
-class AgentListView(LoginRequiredMixin, FilterAgentMixin, ListView):
+class AgentListView(LoginMixinOrganisation, FilterAgentMixin, ListView):
     model= Agent
     context_object_name = 'agents'
     template_name = 'agent/agent_list.html'
 
-class AgentDetailView(LoginRequiredMixin, FilterAgentMixin, DetailView):
+class AgentDetailView(LoginMixinOrganisation, FilterAgentMixin, DetailView):
     model = Agent
     context_object_name = 'agent'
     pk_url_kwarg = 'agent_pk'
     template_name = 'agent/agent_detail.html'
     
     
-class AgentCreateView(LoginRequiredMixin, EditAgentMixin, FilterAgentMixin, CreateView):
+class AgentCreateView(LoginMixinOrganisation, EditAgentMixin, FilterAgentMixin, CreateView):
     template_name = 'agent/forms/createagent.html'
     def form_valid(self, form):
-        agent = form.save(commit = False)
-        agent.organisation = self.request.user.profile
-        agent.save()
+        user = form.save(commit = False)
+        user.is_agent = True
+        user.is_organisation = False
+        user.set_password(str(randint(1000,10000000)))
+        user.save()
+        Agent.objects.create(user = user,
+                             organisation = self.request.user.profile)
         return super().form_valid(form)
     
-class AgentUpdateView(LoginRequiredMixin, EditAgentMixin, FilterAgentMixin, UpdateView):
+class AgentUpdateView(LoginMixinOrganisation, EditAgentMixin, FilterAgentMixin, UpdateView):
     pk_url_kwarg = 'agent_pk'
     template_name = 'agent/forms/updateagent.html'
     def form_valid(self, form):

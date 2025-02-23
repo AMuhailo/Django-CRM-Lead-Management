@@ -5,8 +5,8 @@ from django.urls import reverse
 
 #Custom user
 class User(AbstractUser):
-    pass
-
+    is_organisation = models.BooleanField(default=True)
+    is_agent = models.BooleanField(default=False)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -22,8 +22,8 @@ class Lead(models.Model):
     email = models.EmailField(blank = True, null = True)
     phone = models.CharField(max_length=20)
     age = models.IntegerField(default=0)
-    agent = models.ForeignKey("Agent", on_delete=models.CASCADE, related_name = 'leads')
-
+    organisation = models.ForeignKey(Profile, on_delete= models.CASCADE, related_name='organisation_leads')
+    agent = models.ForeignKey("Agent", null=True, blank=True, on_delete=models.SET_NULL, related_name = 'leads')
     class Meta:
         ordering = ['-id','age']
     

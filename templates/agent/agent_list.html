@@ -13,7 +13,6 @@
             <tr>
                 <th scope="col" class="table-light">First Name</th>
                 <th scope="col" class="table-light">Last Name</th>
-                <th scope="col" class="table-light">Phone Number</th>
                 <th scope="col" class="table-light">Email</th>
                 <th scope="col" class="table-light">Lead</th>
                 <th scope="col" class="table-light"></th>
@@ -23,7 +22,6 @@
             <tr>
                 <td><strong>{{ agent.user.first_name }}</strong></td>
                 <td><strong>{{ agent.user.last_name }}</strong></td>
-                <td>{{ agent.user.phone }}</td>
                 <td>{{ agent.user.email }}</td>
                 {% with lead=agent.leads.count%}
                     <td>{{lead }}</td>

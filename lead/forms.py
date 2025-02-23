@@ -8,7 +8,7 @@ User = get_user_model()
 class LeadForm(forms.ModelForm):
     class Meta:
         model = Lead
-        exclude = ['agent']
+        exclude = ['organisation']
         
 
 class CustomSinginForm(UserCreationForm):
