@@ -9,8 +9,8 @@
         <h4 class="fw-bold text-capitalize">{{ lead.first_name }}</h4>
         <div class="d-flex justify-content-start option-detail">
             <a class="text-decoration-none link-option-detail active">Overview</a>
-            <a href="{% url 'lead:lead_update_url' lead.pk%}"class="text-decoration-none link-option-detail ">Update Lead</a>
-            <a href="/" class="text-decoration-none link-option-detail ">Overview</a>
+            <a href="{% url 'lead:lead_update_url' lead.id%}"class="text-decoration-none link-option-detail ">Update Lead</a>
+            <a href="{% url 'lead:category_lead_update_url' lead.id %}" class="text-decoration-none link-option-detail ">Category</a>
         </div>
         <div class="my-3">
             <h5 class="text-uppercase">Detail</h5>

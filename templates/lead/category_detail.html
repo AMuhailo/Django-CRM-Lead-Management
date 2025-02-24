@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Category {{ category.title }}{% endblock title %}
+
+{% block content %}
+<div class="container content-justify">
+    <div class="d-flex align-items-center border-bottom border-2 p-3 w-75 mx-auto">
+        <h3 class="fw-bold d-flex flex-column">
+            Category {{ category.title }}            
+        </h3>
+        <a href="{% url 'lead:category_list_url'%}" class="create-content ms-auto text-decoration-none ">Back to categories</a>
+    </div>
+    <table class="table table-striped w-75 mx-auto">
+        <thead>
+            <tr>
+                <th scope="col" class="table-light">First Name</th>
+                <th scope="col" class="table-light">Last Name</th>
+                <th scope="col" class="table-light">Agent</th>
+            </tr>
+        </thead>
+        {% for lead in category.category_leads.all %}
+            <tr>
+                <td><strong>{{ lead.first_name }}</strong></td>
+                <td><strong>{{ lead.last_name }}</strong></td>
+                <td>{{ lead.agent.user.get_full_name}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+</div>
+{% endblock content %}

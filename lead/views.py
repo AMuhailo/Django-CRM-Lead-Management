@@ -1,18 +1,13 @@
-from ast import Load
-from urllib import request
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, FormView
-from lead.forms import LeadForm, CustomSinginForm, AssignAgentForm
-from lead.models import Lead, Agent
+from lead.forms import CategoryLeadForm, LeadForm, CustomSinginForm, AssignAgentForm
+from lead.models import Category, Lead, Agent
 # Create your views here.
 
-class EditFormMixin:
-    model = Lead
-    form_class = LeadForm
-    success_url = reverse_lazy('lead:lead_list_url')
-    
+
     
 class SelectedMixin:
     def get_context_data(self, **kwargs):
@@ -20,7 +15,19 @@ class SelectedMixin:
         context["select"] = 'lead'
         return context
     
-class LeadTypeFilterMixin:
+
+
+class CategoryMixin(SelectedMixin):
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organisation:
+            categories = Category.objects.filter(organisation = user.profile).select_related('organisation').annotate(category_count=Count('category_leads'))
+        else:
+            categories = Category.objects.filter(organisation = user.agent.organisation).select_related('organisation').annotate(category_count=Count('category_leads'))
+        return categories
+    
+
+class LeadTypeFilterMixin(SelectedMixin):
     def get_queryset(self):
         user = self.request.user
         queryset = Lead.objects.select_related('agent','agent__user','category')
@@ -32,7 +39,13 @@ class LeadTypeFilterMixin:
             queryset = queryset.filter(agent__user = user)
         return queryset
     
-
+    
+class EditFormMixin(LeadTypeFilterMixin):
+    model = Lead
+    form_class = LeadForm
+    success_url = reverse_lazy('lead:lead_list_url')
+     
+     
 class SinginView(CreateView):
     template_name = 'registration/singin.html'
     form_class = CustomSinginForm
@@ -43,7 +56,7 @@ class HomeTemplateView(TemplateView):
     template_name = 'home.html'
     
     
-class LeadListView(LoginRequiredMixin, LeadTypeFilterMixin ,SelectedMixin, ListView):
+class LeadListView(LoginRequiredMixin, LeadTypeFilterMixin, ListView):
     model = Lead
     context_object_name = 'leads'
     template_name = 'lead/lead_list.html'
@@ -55,9 +68,8 @@ class LeadListView(LoginRequiredMixin, LeadTypeFilterMixin ,SelectedMixin, ListV
             context["unassigned_leads"] = Lead.objects.filter(agent__isnull = True).select_related('agent','agent__user','category')
         return context
     
-    
 
-class LeadDetailView(LoginRequiredMixin, LeadTypeFilterMixin, SelectedMixin, DetailView):
+class LeadDetailView(LoginRequiredMixin, LeadTypeFilterMixin, DetailView):
     model = Lead
     template_name = 'lead/lead_detail.html'
     context_object_name = 'lead'
@@ -65,7 +77,7 @@ class LeadDetailView(LoginRequiredMixin, LeadTypeFilterMixin, SelectedMixin, Det
         return get_object_or_404(Lead, pk=self.kwargs.get('lead_pk'))
 
 
-class LeadCreateView(LoginRequiredMixin, LeadTypeFilterMixin, SelectedMixin, EditFormMixin, CreateView):
+class LeadCreateView(LoginRequiredMixin, EditFormMixin, CreateView):
     template_name = 'lead/forms/createlead.html'
     def form_valid(self, form):
         lead = form.save(commit=False)
@@ -74,7 +86,7 @@ class LeadCreateView(LoginRequiredMixin, LeadTypeFilterMixin, SelectedMixin, Edi
         return super().form_valid(form)
     
 
-class LeadUpdateView(LoginRequiredMixin, SelectedMixin, EditFormMixin, UpdateView):
+class LeadUpdateView(LoginRequiredMixin, EditFormMixin, UpdateView):
     pk_url_kwarg = 'lead_pk'
     template_name = 'lead/forms/updatelead.html'
     def form_valid(self, form):
@@ -86,7 +98,36 @@ class LeadUpdateView(LoginRequiredMixin, SelectedMixin, EditFormMixin, UpdateVie
         return Lead.objects.filter(organisation = user.is_organisation)
     
 
-        
+class CategoryListView(LoginRequiredMixin, CategoryMixin, ListView):
+    template_name = 'lead/category_list.html'
+    context_object_name = 'categories'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["unassigned"] = Lead.objects.filter(agent__isnull = True).count()
+        return context
+    
+
+class CategoryDetailView(LoginRequiredMixin, CategoryMixin, DetailView):
+    model = Category
+    template_name = 'lead/category_detail.html'
+    context_object_name = 'category'
+
+    def get_object(self, queryset = ...):
+        queryset = Category.objects.prefetch_related('category_leads__agent','category_leads__agent__user')
+        return get_object_or_404(queryset, title = self.kwargs.get('category_title'))
+    
+
+class CategoryLeadUpdateView(LoginRequiredMixin, CategoryMixin, UpdateView):
+    form_class = CategoryLeadForm
+    template_name = 'lead/forms/categoryupdatelead.html'
+    
+    def get_object(self, queryset = ...):
+        return get_object_or_404(Lead, id = self.kwargs.get('lead_pk'))
+    
+    def get_success_url(self):
+        return reverse_lazy('lead:lead_detail_url', args = [self.get_object().pk])
+
 class AssignLeadAgent(LoginRequiredMixin, SelectedMixin, FormView):
     template_name = 'lead/forms/assignlead.html'
     form_class = AssignAgentForm

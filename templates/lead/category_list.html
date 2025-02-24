@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Category Leads{% endblock title %}
+
+{% block content %}
+<div class="container content-justify">
+    <div class="d-flex align-items-center border-bottom border-2 p-3">
+        <h3 class="fw-bold">Categories leads </h3>
+        {% if request.user.is_organisation %}
+        <a href="{% url 'lead:lead_list_url'%}" class="create-content ms-auto text-decoration-none ">Back to lead</a>
+        {% endif %}
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col" class="table-light">Category</th>
+                <th scope="col" class="table-light">Count</th>
+            </tr>
+        </thead>
+            <tr>
+                <td>Unassigned</td>
+                <td>{{ unassigned }}</td>
+            </tr>
+        {% for category in categories %}
+            <tr>
+                <td>
+                    <a href="{{ category.get_absolute_url }}" class="text-decoration-none text-capitalize text-dark">
+                        {{ category.title}}
+                    </a>
+                </td>
+                <td>{{ category.category_count }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock content %}

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.contrib.auth import get_user_model
-from .models import Lead,Agent
+from .models import Category, Lead,Agent
 
 User = get_user_model()
 
@@ -18,7 +18,10 @@ class CustomSinginForm(UserCreationForm):
         field_classes = {'username':UsernameField}
     
 
-        
+class CategoryLeadForm(forms.ModelForm):
+    class Meta:
+        model = Lead
+        fields = ['category']
 
 class AssignAgentForm(forms.Form):
     agent = forms.ModelChoiceField(queryset=Agent.objects.none())

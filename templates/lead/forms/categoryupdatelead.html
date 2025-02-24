@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} Update lead{% endblock title %}
+{% block title %} Update Category{% endblock title %}
 
 {% block content %}
 <div class="content-detail container" style="width:60%">
@@ -9,20 +9,16 @@
         <h4 class="fw-bold text-capitalize">{{ lead.first_name }}</h4>
         <div class="d-flex justify-content-start option-detail">
             <a href="{{ lead.get_absolute_url }}" class="text-decoration-none link-option-detail ">Overview</a>
-            <a class="text-decoration-none link-option-detail active">Update Lead</a>
-            <a href="{% url 'lead:category_lead_update_url' lead.id %}" class="text-decoration-none link-option-detail ">Category</a>
+            <a href="{% url 'lead:lead_update_url' lead.pk%}"class="text-decoration-none link-option-detail ">Update Lead</a>
+            <a  class="text-decoration-none link-option-detail active">Category</a>
         </div>
         <div class="my-3">
-            <h5 class="text-uppercase">Update lead</h5>
-            <form class="border-bottom border-2 pb-4" method='POST'>
+            <h5 class="text-uppercase">Update Category</h5>
+            <form method='POST'>
                 {% csrf_token %}
                 {{ form.as_p}}
-                <button type="submit" class="btn btn-primary btn-sm">Update lead</button>
+                <button type="submit" class="btn btn-primary btn-sm">Update category</button>
             </form>
-            <form class="mt-3">
-                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-            </form>
-            
         </div>
     </div>
 </div>
