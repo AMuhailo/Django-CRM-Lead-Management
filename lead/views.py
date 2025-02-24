@@ -2,20 +2,19 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, FormView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, FormView , DeleteView
 from lead.forms import CategoryLeadForm, LeadForm, CustomSinginForm, AssignAgentForm
 from lead.models import Category, Lead, Agent
 # Create your views here.
 
 
-    
+""" MIXIN """
 class SelectedMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["select"] = 'lead'
         return context
     
-
 
 class CategoryMixin(SelectedMixin):
     def get_queryset(self):
@@ -46,6 +45,7 @@ class EditFormMixin(LeadTypeFilterMixin):
     success_url = reverse_lazy('lead:lead_list_url')
      
      
+""" LEAD VIEW """
 class SinginView(CreateView):
     template_name = 'registration/singin.html'
     form_class = CustomSinginForm
@@ -87,17 +87,27 @@ class LeadCreateView(LoginRequiredMixin, EditFormMixin, CreateView):
     
 
 class LeadUpdateView(LoginRequiredMixin, EditFormMixin, UpdateView):
-    pk_url_kwarg = 'lead_pk'
     template_name = 'lead/forms/updatelead.html'
+    
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+    
+    def get_object(self, queryset = ...):
+        lead = Lead.objects.select_related('organisation__user','organisation')
+        return get_object_or_404(lead, id = self.kwargs.get('lead_pk'))
     
     def get_queryset(self):
         user = self.request.user
         return Lead.objects.filter(organisation = user.is_organisation)
     
-
+class LeadDeleteView(LoginRequiredMixin, LeadTypeFilterMixin, DeleteView):
+    model = Lead
+    template_name = 'lead/deletelead.html'
+    pk_url_kwarg = 'lead_pk'
+    success_url = reverse_lazy('lead:lead_list_url')
+    
+""" CATEGORY """
 class CategoryListView(LoginRequiredMixin, CategoryMixin, ListView):
     template_name = 'lead/category_list.html'
     context_object_name = 'categories'
@@ -127,6 +137,7 @@ class CategoryLeadUpdateView(LoginRequiredMixin, CategoryMixin, UpdateView):
     
     def get_success_url(self):
         return reverse_lazy('lead:lead_detail_url', args = [self.get_object().pk])
+
 
 class AssignLeadAgent(LoginRequiredMixin, SelectedMixin, FormView):
     template_name = 'lead/forms/assignlead.html'

@@ -1,11 +1,14 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %} Create Lead {% endblock title %}
 
 {% block content %}
-    <form method='POST'>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class='btn btn-sm btn-primary'>Create</button>
-    </form>
+    <div class='mx-auto w-25 mt-5'>
+        <form method='POST'>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class='btn btn-sm btn-primary'>Create</button>
+        </form>
+    </div>
 {% endblock content %}

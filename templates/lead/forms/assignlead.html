@@ -1,13 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %} Create Lead {% endblock title %}
 
 {% block content %}
     <form method='POST'>
         {% csrf_token %}
-        {% for field in form %}
-            {{ field}}
-        {% endfor %}
+        {{ form.as_p }}
         <button class='btn btn-sm btn-primary'>Create</button>
     </form>
 {% endblock content %}

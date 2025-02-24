@@ -3,9 +3,18 @@
 {% block title %} Create Agent {% endblock title %}
 
 {% block content %}
-    <form method='POST'>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class='btn btn-sm btn-primary'>Create</button>
-    </form>
+    <div class="mx-auto mt-5 w-25">
+        <form class="row gap-3" method='POST'>
+            {% csrf_token %}
+            {% for field in form  %}
+                <div class="col-12">
+                    <label for="field" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <div class="col-12">
+                <button type="submit" class="btn btn-sm btn-primary">Create in</button>
+            </div>
+        </form>
+    </div>
 {% endblock content %}

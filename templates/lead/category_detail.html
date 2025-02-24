@@ -3,10 +3,10 @@
 {% block title %}Category {{ category.title }}{% endblock title %}
 
 {% block content %}
-<div class="container content-justify">
+<div class="container content-justify w-75">
     <div class="d-flex align-items-center border-bottom border-2 p-3 w-75 mx-auto">
-        <h3 class="fw-bold d-flex flex-column">
-            Category {{ category.title }}            
+        <h3 class="fw-bold d-flex flex-column text-capitalize">
+            {{ category.title }}            
         </h3>
         <a href="{% url 'lead:category_list_url'%}" class="create-content ms-auto text-decoration-none ">Back to categories</a>
     </div>

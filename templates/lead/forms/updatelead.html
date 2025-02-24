@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %} Update lead{% endblock title %}
 
@@ -14,12 +15,21 @@
         </div>
         <div class="my-3">
             <h5 class="text-uppercase">Update lead</h5>
-            <form class="border-bottom border-2 pb-4" method='POST'>
-                {% csrf_token %}
-                {{ form.as_p}}
-                <button type="submit" class="btn btn-primary btn-sm">Update lead</button>
+
+            <form class="row gy-2 gx-3 align-items-center border-bottom border-2 pb-4" method='POST'>
+                {% for field in form %}
+                    {% csrf_token %}
+                    <div class="col-6">
+                        <label for="input-field" class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
             </form>
-            <form class="mt-3">
+            <form class="mt-3" method="POST" action = "{% url 'lead:lead_delete_url' lead.pk %}">
+                {% csrf_token%}
                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
             </form>
             

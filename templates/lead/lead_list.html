@@ -7,11 +7,9 @@
     <div class="d-flex align-items-center border-bottom border-2 p-3">
         <h3 class="fw-bold d-flex flex-column">
             Lead
-            {% if request.user.is_organisation %}
-                <span style='font-size:12px;'>
-                    <a href="{% url 'lead:category_list_url'%}" class='text-secondary text-decoration-none'>View lead category</a>
-                </span>
-            {% endif %}
+            <span style='font-size:12px;'>
+                <a href="{% url 'lead:category_list_url'%}" class='text-secondary text-decoration-none'>View lead category</a>
+            </span>
         </h3>
         {% if request.user.is_organisation %}
         <a href="{% url 'lead:lead_create_url'%}" class="create-content ms-auto text-decoration-none ">Create a new lead</a>

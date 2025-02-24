@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+
 from environ import Env
 env = Env()
 Env.read_env()
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
     'lead.apps.LeadConfig',
     'agent.apps.AgentConfig',
     "debug_toolbar",
+    'crispy_forms',
+    'crispy_tailwind',
 ]
 
 INTERNAL_IPS = [
@@ -111,8 +114,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'tailwind'
+CRISPY_TEMPLATE_PACK = 'tailwind'
 
-
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
