@@ -23,9 +23,7 @@
                 <td><strong>{{ agent.user.first_name }}</strong></td>
                 <td><strong>{{ agent.user.last_name }}</strong></td>
                 <td>{{ agent.user.email }}</td>
-                {% with lead=agent.leads.count%}
-                    <td>{{lead }}</td>
-                {% endwith %}
+                <td>{{agent.lead_total }}</td>
                 <td>
                     <a href="{% url 'agent:agent_update_url' agent.pk%}" class='text-decoration-none edit-link'>Edit</a>
                 </td>

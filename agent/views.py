@@ -3,6 +3,7 @@ from agent.mixins import LoginMixinOrganisation
 from django.urls import reverse_lazy
 from agent.forms import AgentForm
 from random import randint
+from django.db.models import Count
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from lead.models import Agent
 
@@ -13,14 +14,17 @@ class EditAgentMixin:
     success_url = reverse_lazy('agent:agent_list_url')
     
 class FilterAgentMixin:
+    queryset = Agent.objects.select_related('user','user__profile')
     def get_queryset(self):
         organisation = self.request.user.profile
-        return Agent.objects.filter(organisation=organisation)    
+        
+        return self.queryset.filter(organisation=organisation).annotate(lead_total = Count('leads')) 
 
 class AgentListView(LoginMixinOrganisation, FilterAgentMixin, ListView):
     model= Agent
     context_object_name = 'agents'
     template_name = 'agent/agent_list.html'
+    
 
 class AgentDetailView(LoginMixinOrganisation, FilterAgentMixin, DetailView):
     model = Agent
@@ -46,6 +50,5 @@ class AgentUpdateView(LoginMixinOrganisation, EditAgentMixin, FilterAgentMixin, 
     template_name = 'agent/forms/updateagent.html'
     def form_valid(self, form):
         form.save()
-        return super().form_valid(form)
-
+        return super().form_valid(form)    
     

@@ -32,7 +32,24 @@
                 <td>{{ lead.age }}</td>
                 <td>{{ lead.phone }}</td>
                 <td>{{ lead.email }}</td>
-                <td>------------</td>
+                <td>
+                    <span class="px-3 py-1 rounded-5 border border-2 
+                        {% if lead.category.title == 'unconverted'%}
+                            border-secondary
+                            bg-body-secondary
+                        {% elif lead.category.title == 'contacted' %}
+                            border-warning
+                            bg-warning-subtle
+                        {% elif lead.category.title == 'converted' %}
+                            border-success
+                            bg-success-subtle
+                        {% else %}
+                            border-primary
+                            bg-primary-subtle
+                        {% endif %}">
+                        {{ lead.category.title }}
+                    </span>
+                </td>
                 {% if request.user.is_organisation %}
                 <td>{{ lead.agent.user.get_full_name}}</td>
                 {% endif %}
@@ -42,5 +59,26 @@
             </tr>
         {% endfor %}
     </table>
+    {% if unassigned_leads %}
+        <div class="my-5">
+            <div class="d-flex align-items-center border-bottom border-2 p-3">
+                <h3 class="fw-bold">Unassigned Lead</h3>
+            </div>
+            <div class="row">
+                {% for lead in unassigned_leads %}
+                    <div class="col-4 p-3">
+                        <div class="card mb-3">
+                            <div class="card-body ms-5 card-content">
+                                <i class="bi bi-box-fill icon"></i>
+                                <h5 class="card-title">{{ lead }}</h5>
+                                <p class="card-text">This lead haven`t agent. Please appoints agent!</p>
+                                <a href="{% url 'lead:assign_lead_url' lead.pk %}" class="text-decoration-none view-link">Assing agent <i class="bi bi-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 </div>
 {% endblock content %}
