@@ -5,12 +5,16 @@
 
 {% block content %}
 <!-- Card Home -->
-<div class="card home-card border-0 ">
-    <img src="/" class="card-img-top" alt="imageCRM">
-    <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-        <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+<div class="card home-card border-0 mt-5">
+    <img src="{% static 'image/homepage.png' %}" class="card-img-top" alt="imageCRM">
+    <div class="card-body d-flex justify-content-center flex-column">
+        <h5 class="card-title text-center">Login or sing-in and works with CRM system</h5>
+        <form action="{% url 'login' %}" method="post" class="mt-1 mx-auto">
+            {% csrf_token %}
+            <button class="rounded px-4 py-1 btn-login text-white">
+                Login
+            </button>
+        </form>
     </div>
 </div> 
 {% endblock content %}

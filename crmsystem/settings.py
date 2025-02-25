@@ -144,5 +144,5 @@ AUTH_USER_MODEL  = 'lead.User'
 
 LOGIN_REDIRECT_URL = 'lead:lead_list_url'
 LOGIN_URL = 'login'
-
+LOGOUT_REDIRECT_URL = 'home_template_url'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
