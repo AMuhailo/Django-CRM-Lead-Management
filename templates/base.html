@@ -25,7 +25,7 @@
                         {% if request.user.is_authenticated %}
                         {% if request.user.is_organisation  %}
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{% url 'agent:agent_list_url'%}">Agent</a>
+                            <a class="nav-link {% if select == 'agent' %}active{% endif %}" aria-current="page" href="{% url 'agent:agent_list_url'%}">Agent</a>
                         </li>
                         {% endif %}
                         <li class="nav-item">

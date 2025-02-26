@@ -6,8 +6,7 @@
 {% block content %}
 <div class="content-detail container" style="width:60%">
     <div class="align-items-center p-3">
-        <h3 class="fw-ligth text-uppercase lead-tt-detail ">Lead</h3>
-        <h4 class="fw-bold text-capitalize">{{ lead.first_name }}</h4>
+        {% include 'lead/include/detailtitle.html' with lead=lead%}
         <div class="d-flex justify-content-start option-detail">
             <a href="{{ lead.get_absolute_url }}" class="text-decoration-none link-option-detail ">Overview</a>
             <a class="text-decoration-none link-option-detail active">Update Lead</a>

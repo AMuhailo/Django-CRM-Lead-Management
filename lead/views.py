@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, FormView , DeleteView
 from lead.forms import CategoryLeadForm, LeadForm, CustomSinginForm, AssignAgentForm
 from lead.models import Category, Lead, Agent
+from lead.tasks import send_lead_message
 # Create your views here.
 
 
@@ -83,6 +84,7 @@ class LeadCreateView(LoginRequiredMixin, EditFormMixin, CreateView):
         lead = form.save(commit=False)
         lead.organisation = self.request.user.profile
         lead.save()
+        send_lead_message.delay(lead.id)
         return super().form_valid(form)
     
 

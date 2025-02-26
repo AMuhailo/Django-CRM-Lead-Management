@@ -1,20 +1,20 @@
 {% extends "base.html" %}
+{% load static%}
 
-{% block title %} Update lead{% endblock title %}
+{% block title %}Logout{% endblock title %}
 
 {% block content %}
-<div class="content-detail container" style="width:60%">
-    <div class="align-items-center p-3">
-        <div class="my-3">
-            <h5 class="text-uppercase">You logout from account.</h5>
-            <form action="{% url 'login' %}" method="post" class="mt-1 mx-3">
-                {% csrf_token %}
-                <button class="rounded px-4 py-1 btn-login">
-                    Login
-                </button>
-            </form>
-            
-        </div>
+<!-- Card Home -->
+<div class="card home-card border-0 mt-5">
+    <img src="{% static 'image/homepage.png' %}" class="card-img-top" alt="imageCRM">
+    <div class="card-body d-flex justify-content-center flex-column">
+        <h5 class="card-title text-center">You logoud from account. Can you want repeat login?</h5>
+        <form action="{% url 'login' %}" method="post" class="mt-1 mx-auto">
+            {% csrf_token %}
+            <button class="rounded px-4 py-1 btn-login text-white">
+                Login
+            </button>
+        </form>
     </div>
-</div>
+</div> 
 {% endblock content %}

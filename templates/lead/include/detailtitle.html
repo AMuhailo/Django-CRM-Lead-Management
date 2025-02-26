@@ -1,0 +1,20 @@
+<h3 class="fw-ligth text-uppercase lead-tt-detail ">Lead</h3>
+<h4 class="fw-bold text-capitalize">
+    {{ lead.first_name }}
+    <span class="px-3 py-1 rounded-5 border border-2  fs-6 fw-normal
+        {% if lead.category.title == 'unconverted'%}
+            border-secondary
+            bg-body-secondary
+        {% elif lead.category.title == 'contacted' %}
+            border-warning
+            bg-warning-subtle
+        {% elif lead.category.title == 'converted' %}
+            border-success
+            bg-success-subtle
+         {% else %}
+            border-0
+            bg-ligth-subtle
+        {% endif %}">
+        {{ lead.category.title }}
+    </span>
+</h4>

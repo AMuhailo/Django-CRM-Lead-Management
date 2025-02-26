@@ -48,8 +48,12 @@
                         {% elif lead.category.title == 'converted' %}
                             border-success
                             bg-success-subtle
+                        {% else %}
+                            border-0
+                            bg-ligth-subtle
                         {% endif %}">
                         {{ lead.category.title }}
+
                     </span>
                 </td>
                 {% if request.user.is_organisation %}

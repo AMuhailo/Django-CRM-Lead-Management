@@ -13,9 +13,15 @@ class EditAgentMixin:
     model = Agent
     form_class = AgentForm
     success_url = reverse_lazy('agent:agent_list_url')
-    
-    
-class FilterAgentMixin:
+
+class AgentMixin:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["select"] = "agent" 
+        return context
+        
+
+class FilterAgentMixin(AgentMixin):
     queryset = Agent.objects.select_related('user','user__profile')
     def get_queryset(self):
         organisation = self.request.user.profile

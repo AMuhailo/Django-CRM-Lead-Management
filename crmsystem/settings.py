@@ -144,5 +144,17 @@ AUTH_USER_MODEL  = 'lead.User'
 
 LOGIN_REDIRECT_URL = 'lead:lead_list_url'
 LOGIN_URL = 'login'
-LOGOUT_REDIRECT_URL = 'home_template_url'
+
+#REDIS
+REDIS_PORT = 6379
+REDIS_HOST = 'redis://localhost:6379/0'
+REDIS_DB = 0
+
+#CELERY
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROCKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_TIMEZONE = "UTC"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

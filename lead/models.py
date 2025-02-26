@@ -13,8 +13,23 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class Category(models.Model):
+    CATEGORY_CHOISES = (
+        ('contacted', 'Contacted'),
+        ('converted', 'Converted'),
+        ('unconverted', 'Unconverted'),
+    )
+    title = models.CharField(choices = CATEGORY_CHOISES, max_length=50, default = 'unconverted')
+    organisation = models.ForeignKey(Profile, on_delete= models.CASCADE)
     
+    def get_absolute_url(self):
+        return reverse("lead:category_detail_url", args=[self.title])
     
+    def __str__(self):
+        return self.title    
+
 #Present client
 class Lead(models.Model):
     first_name = models.CharField(max_length=50)
@@ -24,7 +39,7 @@ class Lead(models.Model):
     age = models.IntegerField(default=0)
     organisation = models.ForeignKey(Profile, on_delete= models.CASCADE, related_name='organisation_leads')
     agent = models.ForeignKey("Agent", null=True, blank=True, on_delete=models.SET_NULL, related_name = 'leads')
-    category = models.ForeignKey('Category',on_delete=models.SET_NULL, null=True, blank=True, related_name='category_leads')
+    category = models.ForeignKey(Category,on_delete=models.SET_NULL, null=True, blank=True, related_name='category_leads')
     class Meta:
         ordering = ['-id','age']
     
@@ -46,17 +61,3 @@ class Agent(models.Model):
     def get_absolute_url(self):
         return reverse("agent:agent_detail_url", args=[self.pk])
 
-class Category(models.Model):
-    CATEGORY_CHOISES = (
-        ('contacted', 'Contacted'),
-        ('converted', 'Converted'),
-        ('unconverted', 'Unconverted'),
-    )
-    title = models.CharField(choices = CATEGORY_CHOISES, max_length=50, default = CATEGORY_CHOISES[0])
-    organisation = models.ForeignKey(Profile, on_delete= models.CASCADE)
-    
-    def get_absolute_url(self):
-        return reverse("lead:category_detail_url", args=[self.title])
-    
-    def __str__(self):
-        return self.title
