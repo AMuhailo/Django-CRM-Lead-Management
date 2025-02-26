@@ -1,5 +1,5 @@
-## __ 📞Lead Management System __
-![Django](https://img.shields.io/badge/Django-4.2-green?style=for-the-badge) ![Python](https://img.shields.io/badge/Python-3.10-blue?style=for-the-badge)
+## __📞Lead Management System__
+![Django](https://img.shields.io/badge/Django-4.2-darkgreen?style=for-the-badge) ![Python](https://img.shields.io/badge/Python-3.10-blue?style=for-the-badge)
 ## Description project
 Lead Management System is a CRM system for managing leads and agents, 
 which includes lead creation functionality, agent management, 
