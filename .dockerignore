@@ -1,0 +1,5 @@
+.env/
+Dockerfile
+ll_env/
+Dockerfile
+.DS_Store

@@ -1,1 +1,0 @@
-web: gunicorn crmsystem.wsgi:application

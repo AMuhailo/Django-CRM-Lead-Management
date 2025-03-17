@@ -3,3 +3,4 @@ ll_env
 crmsystem/.env
 */fixtures/
 *.sqlite3
+*db
