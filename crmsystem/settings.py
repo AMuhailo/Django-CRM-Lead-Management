@@ -38,8 +38,8 @@ if ENVIRONMENT == "prod":
         ("Muhailo I", 'amuhailo25@gmail.com')
     ]
 
-    ALLOWED_HOSTS = ['*']
-
+    ALLOWED_HOSTS = ['127.0.0.1','localhost','lead-crm.up.railway.app','www.lead-crm.up.railway.app']
+    CSRF_TRUSTED_ORIGINS = ['https://lead-crm.up.railway.app']
 else:
     DEBUG = True
 
