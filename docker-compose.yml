@@ -1,25 +1,33 @@
 services:
+
   db:
     image: postgres:14.5
     restart: always
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=crm
       - POSTGRES_USER=crmadmin
       - POSTGRES_PASSWORD=mrcnimda
+    ports:
+      - "5432:5432"
+    env_file: ./crmsystem/.env
 
   redis:
     image: redis:7
     restart: always
     ports:
       - "6379:6379"
+    volumes:
+      - redis_data:/data
+    env_file: ./crmsystem/.env
 
   cache:
     image: redis:7
     restart: always
     volumes:
       - ./data/cache:/data
+    env_file: ./crmsystem/.env
 
   web:
     build: .
@@ -27,12 +35,12 @@ services:
     
     env_file: ./crmsystem/.env
     volumes:
-      - .:/app
+      - .:/code
     ports:
       - "8000:8000"
     command: ['./wait-for-it.sh','db:5432','--','gunicorn', 'crmsystem.wsgi:application','--bind', '0.0.0.0:8000']
     environment:
-      - DJANGO_SETTINGS_MODULE=crmsystem.settings.prod
+      - DJANGO_SETTINGS_MODULE=crmsystem.settings
       - POSTGRES_DB=crm
       - POSTGRES_USER=crmadmin
       - POSTGRES_PASSWORD=mrcnimda
@@ -45,22 +53,32 @@ services:
     image: nginx:1.23.1
     restart: always
     volumes:
-      - ./nginx/nginx.conf:/nginx/nginx.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/conf
       - static_volume:/code/static
       - media_volume:/code/media
       - .:/code
     ports:
       - '80:80'
+    depends_on:
+      - web
+      - db
+      - redis
+    env_file: ./crmsystem/.env
+
   celery:
     build: .
     restart: always
+    volumes:
+      - .:/code
     depends_on:
       - redis
       - db
       - web
     command: ['celery', '-A', 'crmsystem', 'worker', '--pool=solo', '--loglevel=info']
+    env_file: ./crmsystem/.env
     
 volumes:
   postgres_data:
   static_volume:
   media_volume:
+  redis_data:

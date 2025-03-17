@@ -1,0 +1,82 @@
+* {
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+}
+.nav-style{
+    border-left:4px solid rgb(74, 82, 192);
+}
+
+.btn-login{
+    background-color: rgb(74, 82, 192);
+    border:0px;
+}
+
+.btn-logout{
+    border:2px solid rgb(74, 82, 192);
+    background-color: rgba(74, 82, 192, 0.3);
+}
+
+.home-card{
+    margin:25% auto;
+    width: 40%;
+}
+
+.content-justify{
+    margin: 10% 0px;
+}
+
+.create-content{
+    color:rgba(114, 114, 114, 0.979)
+}
+
+.create-content:hover{
+    color:rgb(74, 82, 192);
+}
+
+.view-link{
+    color:rgb(74, 82, 192);
+}
+
+.card-content{
+    position: relative;
+}
+
+.icon{
+    position: absolute;
+    left:-30px;
+    font-size: 32px;
+    color: rgba(74, 82, 192, 0.8);
+}
+
+.edit-link{
+    color: rgba(74, 82, 192, 0.8);
+    font-weight: 500;
+}
+
+.content-detail{
+    margin:7% 0px;
+    
+}
+
+.lead-tt-detail{
+    color:rgba(114, 114, 114, 0.979);
+    font-weight: 330;
+    font-size: 14px;
+}
+
+
+.link-option-detail{
+    color: rgba(75, 75, 75, 0.979);
+    padding-right: 20%;
+    border-bottom: 1px solid rgba(114, 114, 114, 0.979);
+}
+
+.active{
+    color: rgba(74, 82, 192, 0.8);
+    font-weight: 600;
+    font-size: 18px;
+    border-bottom: 2px solid rgba(74, 82, 192, 0.8);
+}

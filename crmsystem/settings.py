@@ -12,11 +12,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
-
+import dj_database_url 
 from environ import Env
 env = Env()
 Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+ENVIRONMENT = env('ENVIRONMENT', default='local')
+ENVIRONMENT = 'prod'
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
@@ -27,9 +29,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = env('SECRET_KEY', default='your-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
+
+if ENVIRONMENT == "prod":
+    DEBUG = False
+
+    ADMINS = [
+        ("Muhailo I", 'amuhailo25@gmail.com')
+    ]
+
+    ALLOWED_HOSTS = ['*']
+
+else:
+    DEBUG = True
 
 
 # Application definition
@@ -56,6 +69,7 @@ INTERNAL_IPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -88,15 +102,20 @@ WSGI_APPLICATION = 'crmsystem.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env("POSTGRES_DB"),
+        "USER":env('POSTGRES_USER'),
+        "PASSWORD":env('POSTGRES_PASSWORD'),
+        "HOST":'db',
+        "PORT":5432,
     }
 }
-
-
+if ENVIRONMENT == 'prod':
+    DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL')) 
+    CELERY_BROKER_URL = env("REDIS_URL", default='redis://')
+    REDIS_URL = env("REDIS_URL")
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -136,11 +155,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static", 
+    os.path.join(BASE_DIR, "static"),
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
 MEDIA_URL = 'madia/'
 MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
@@ -151,13 +169,10 @@ AUTH_USER_MODEL  = 'lead.User'
 LOGIN_REDIRECT_URL = 'lead:lead_list_url'
 LOGIN_URL = 'login'
 
-#REDIS
-REDIS_PORT = 6379
-REDIS_HOST = 'redis://redis:6379/0'
-REDIS_DB = 0
-
+REDIS_URL = env("REDIS_URL")
 #CELERY
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+
 CELERY_BROCKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_TIMEZONE = "UTC"
 CELERY_TASK_TRACK_STARTED = True

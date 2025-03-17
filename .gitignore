@@ -1,6 +1,5 @@
 ll_env
 *__pycache__/
 crmsystem/.env
-*/fixtures/
 *.sqlite3
-*db
+*data/
