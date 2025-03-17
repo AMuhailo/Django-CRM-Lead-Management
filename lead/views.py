@@ -80,6 +80,7 @@ class LeadDetailView(LoginRequiredMixin, LeadTypeFilterMixin, DetailView):
 
 class LeadCreateView(LoginRequiredMixin, EditFormMixin, CreateView):
     template_name = 'lead/forms/createlead.html'
+    success_url = reverse_lazy('lead:lead_list_url')
     def form_valid(self, form):
         lead = form.save(commit=False)
         lead.organisation = self.request.user.profile
