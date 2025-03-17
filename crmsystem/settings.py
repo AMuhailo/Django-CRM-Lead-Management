@@ -19,7 +19,7 @@ Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 ENVIRONMENT = env('ENVIRONMENT', default='local')
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -106,6 +106,8 @@ DATABASES = {
         'NAME': 'crm',
         "USER":'crmadmin',
         "PASSWORD":'mrcnimda',
+        "HOST":'db',
+        "POST":5432,
     }
 }
 if ENVIRONMENT == 'prod':

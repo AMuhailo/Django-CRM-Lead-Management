@@ -1,0 +1,84 @@
+services:
+
+  db:
+    image: postgres:14.5
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=crm
+      - POSTGRES_USER=crmadmin
+      - POSTGRES_PASSWORD=mrcnimda
+    ports:
+      - "5432:5432"
+    env_file: ./crmsystem/.env
+
+  redis:
+    image: redis:7
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    env_file: ./crmsystem/.env
+
+  cache:
+    image: redis:7
+    restart: always
+    volumes:
+      - ./data/cache:/data
+    env_file: ./crmsystem/.env
+
+  web:
+    build: .
+    restart: always
+    
+    env_file: ./crmsystem/.env
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - DJANGO_SETTINGS_MODULE=crmsystem.settings
+      - POSTGRES_DB=crm
+      - POSTGRES_USER=crmadmin
+      - POSTGRES_PASSWORD=mrcnimda
+    depends_on:
+      - db
+      - redis
+      - cache
+  
+  nginx:
+    image: nginx:1.23.1
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf
+      - static_volume:/code/static
+      - media_volume:/code/media
+      - .:/code
+    ports:
+      - '80:80'
+    depends_on:
+      - web
+      - db
+      - redis
+    env_file: ./crmsystem/.env
+
+  celery:
+    build: .
+    restart: always
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+      - db
+      - web
+    command: ['celery', '-A', 'crmsystem', 'worker', '--pool=solo', '--loglevel=info']
+    env_file: ./crmsystem/.env
+    
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+  redis_data:
