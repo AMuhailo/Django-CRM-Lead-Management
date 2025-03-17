@@ -43,7 +43,6 @@ if ENVIRONMENT == "prod":
 else:
     DEBUG = True
 
-
 # Application definition
 
 INSTALLED_APPS = [
