@@ -114,6 +114,8 @@ if ENVIRONMENT == 'prod':
     DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL')) 
     CELERY_BROKER_URL = env("REDIS_URL", default='redis://')
     REDIS_URL = env("REDIS_URL")
+else:
+    CELERY_BROKER_URL = 'redis://redis:6379/0'
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -169,9 +171,7 @@ LOGIN_URL = 'login'
 
 REDIS_URL = env("REDIS_URL")
 #CELERY
-if ENVIRONMENT == 'local':
-    CELERY_BROKER_URL = 'redis://redis:6379/0'
-
+    
 CELERY_BROCKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_TIMEZONE = "UTC"
 CELERY_TASK_TRACK_STARTED = True

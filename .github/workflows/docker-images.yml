@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build Docker Image
+      - name: Build and push Docker Image
         run: 
           docker login ghcr.io --username amuhailo --password ${{ secrets.PAT }}
           docker build . -t ghcr.io/amuhailo/docker-image
