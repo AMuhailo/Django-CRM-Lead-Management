@@ -7,7 +7,7 @@ password reset system, client categorization and full CRUD functionality.
 Docker Images with containers (Redis, PostgreSQL, Nginx, Web, Celery) and deployment on RailWay.
 
 🚀Deploy on Railway
-The project is deployed on Railway. To check the operation of the site, go to the link: 🔗[text](https://lead-crm.up.railway.app/)
+The project is deployed on Railway. To check the operation of the site, go to the link: 🔗[Lead Management](https://lead-crm.up.railway.app/)
 
 
 ## 🚀 Functional
