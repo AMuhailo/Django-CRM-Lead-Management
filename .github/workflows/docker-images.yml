@@ -7,9 +7,14 @@ jobs:
   build_and_publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Build and push Docker Image
-        run: 
-          docker login ghcr.io --username amuhailo --password ${{ secrets.PAT }}
-          docker build . -t ghcr.io/amuhailo/docker-image
-          docker push ghcr.io/amuhailo/docker-image
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username amuhailo --password-stdin
+
+      - name: Build Docker Image
+        run: docker build . -t ghcr.io/amuhailo/docker-image:latest
+
+      - name: Push Docker Image
+        run: docker push ghcr.io/amuhailo/docker-image:latest
