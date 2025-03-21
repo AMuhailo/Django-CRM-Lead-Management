@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, FormView , DeleteView
 from lead.forms import CategoryLeadForm, LeadForm, CustomSinginForm, AssignAgentForm
 from lead.models import Category, Lead, Agent
-from lead.tasks import send_lead_message
+from lead.tasks import send_lead_message, lead_list
 # Create your views here.
 
 
@@ -67,6 +67,7 @@ class LeadListView(LoginRequiredMixin, LeadTypeFilterMixin, ListView):
         user = self.request.user
         if user.is_organisation:
             context["unassigned_leads"] = Lead.objects.filter(agent__isnull = True).select_related('agent','agent__user','category')
+        lead_list.delay(user)
         return context
     
 

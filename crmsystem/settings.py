@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     'crispy_forms',
     'crispy_tailwind',
+    'django_celery_beat',
 ]
 
 INTERNAL_IPS = [
