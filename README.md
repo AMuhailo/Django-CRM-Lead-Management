@@ -11,7 +11,7 @@ The project is deployed on Railway. To check the operation of the site, go to th
 
 
 ## 🚀 Functional
-✔️ CRUD for lead , agent , category ✔️ Assign a lead to an agent ✔️ Send a message to a lead via Celery ✔️ Register and manage agents ✔️ Assign leads to agents ✔️ Reset password via email ✔️ Group customers by category ✔️ Filter leads by category ✔️ Docker & Docker Compose ✔️ Deploy on Railway
+✔️ CRUD for lead , agent , category ✔️ Assign a lead to an agent ✔️ Send a message to a lead via Celery ✔️ Register and manage agents ✔️ Assign leads to agents ✔️ Reset password via email ✔️ Group customers by category ✔️ Filter leads by category ✔️ Docker & Docker Compose ✔️ Deploy on Railway ✔️Conected AWS S3 for media files
 
 
 
@@ -21,6 +21,7 @@ The project is deployed on Railway. To check the operation of the site, go to th
 - **Celery + Redis**
 - **Celery**
 - **Nginx**
+- **AWS S3**
 - **Docker & Docker Compose**
 - **Railway.app**
 
@@ -56,6 +57,9 @@ ENVIRONMENT=local
 SECRET_KEY=your-secret-key
 DATABASE_URL=your-database-url
 REDIS_URL=your-redis-url
+AWS_ACCESS_KEY_ID=your-aws-key
+AWS_SECRET_ACCESS_KEY=your-aws-secret-key
+AWS_STORAGE_BUCKET_NAME=your-aws-name
 ```
 ⚠️ Don`t upload .env to GitHub!
 It needs to be added to .gitignore.
