@@ -18,7 +18,6 @@ env = Env()
 Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 ENVIRONMENT = env('ENVIRONMENT', default='local')
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -161,7 +160,23 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = 'madia/'
-MEDIA_ROOT = BASE_DIR / 'media'
+if ENVIRONMENT == 'prod':
+    STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        },
+    'staticfiles':{
+        "BACKEND": 'django.contrib.staticfiles.storage.StaticFilesStorage'
+        },
+    }
+    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_LOCATION = 'media'
+else:
+    MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
