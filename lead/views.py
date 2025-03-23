@@ -67,7 +67,7 @@ class LeadListView(LoginRequiredMixin, LeadTypeFilterMixin, ListView):
         user = self.request.user
         if user.is_organisation:
             context["unassigned_leads"] = Lead.objects.filter(agent__isnull = True).select_related('agent','agent__user','category')
-        lead_list.delay(user)
+        lead_list.delay(user.id)
         return context
     
 
